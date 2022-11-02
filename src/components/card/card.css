@@ -36,6 +36,17 @@
     background: transparent;
 }
 
+.heart {
+  font-size: 10px;
+  color: transparent;
+  &:hover {
+    color: white;
+  }
+  &.active {
+    color: red;
+  }
+}
+
 /* ============= CARD BACKGROUNDS ============ */
 
 .rock {

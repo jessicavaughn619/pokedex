@@ -37,8 +37,8 @@ const App = () => {
     //     setFilterParam(e.target.value);
     //     filterByType(e.target.value);
     // }}
-    className="custom-select">
-    <option value="All">Filter by Type</option>
+    className="type-filter">
+    <option value="All">Filter By Type</option>
     <option value="rock">Rock</option>
     <option value="ghost">Ghost</option>
     <option value="electric">Electric</option>
@@ -65,7 +65,9 @@ const App = () => {
     />
     )}
     </div>
-    <button className="load-more" onClick={()=>getAllPokemon()}>Catch More Pokémon</button>
+    <div className="load-more">
+    <button className="load-more-btn" onClick={()=>getAllPokemon()}><h3>Catch More Pokémon</h3></button>
+    </div>
     <Footer />
     </>
   )
