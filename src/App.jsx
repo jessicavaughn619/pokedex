@@ -6,9 +6,9 @@ import Footer from "./components/footer/Footer";
 import "./index.css"
 
 const App = () => {
-    const [allPokemon, setAllPokemon] = useState([]);
+    const [allPokemons, setAllPokemons] = useState([]);
     const [loadPoke, setLoadPoke] = useState('https://pokeapi.co/api/v2/pokemon?limit=20');
-    const getAllPokemon = async () => {
+    const getAllPokemons = async () => {
         const res = await fetch(loadPoke)
         const data = await res.json()
         setLoadPoke(data.next)
@@ -17,26 +17,40 @@ const App = () => {
             result.forEach(async (pokemon) => {
                 const res = await fetch (`https://pokeapi.co/api/v2/pokemon/${pokemon.name}`)
                 const data = await res.json();
-                setAllPokemon(currentList => [...currentList,data])
+                setAllPokemons(currentList => [...currentList,data])
             });
         }
         createPokemonObject(data.results)
-        await console.log(allPokemon)
+        await console.log(allPokemons)
     }
 
+    const [q, setQ] = useState("")
+    const [searchParam] = useState(["rock", "ghost"])
+    
     useEffect(() => {
-        getAllPokemon()
+        getAllPokemons()
     }, [])
+
+    const [filterByType, setFilterParam] = useState();
 
   return (
     <>
     <Header />
     <Nav />
+    {allPokemons.filter((pokemon) => {
+        searchParam.some((newPokemon) => {
+         (
+            pokemon[newPokemon]
+        );
+    });
+    );
+    <div className="wrapper">
+        <div className="search-wrapper">
+            <input type="search" name="search-form" id="search-form" className="search-input" placeholder="Search for..." value={q}
+            onChange={(e) => setQ(e.target.value)} />
+        </div>
+    </div>
     <select
-    // onChange={(e) => {
-    //     setFilterParam(e.target.value);
-    //     filterByType(e.target.value);
-    // }}
     className="type-filter">
     <option value="All">Filter By Type</option>
     <option value="rock">Rock</option>
@@ -53,7 +67,7 @@ const App = () => {
     </select>
 
     <div className="pokemon__container">
-    {allPokemon.map((pokemon,index) =>
+    {allPokemons.map((pokemon,index) =>
     <Card 
     id = {pokemon.id}
     name = {pokemon.name}
@@ -66,11 +80,11 @@ const App = () => {
     )}
     </div>
     <div className="load-more">
-    <button className="load-more-btn" onClick={()=>getAllPokemon()}><h3>Catch More Pokémon</h3></button>
+    <button className="load-more-btn" onClick={()=>getAllPokemons()}><h3>Catch More Pokémon</h3></button>
     </div>
     <Footer />
     </>
   )
-}
+};
 
 export default App
