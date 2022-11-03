@@ -7,6 +7,7 @@ import "./index.css"
 
 const App = () => {
     const [allPokemons, setAllPokemons] = useState([]);
+    const [filterParam, setFilterParam] = useState(["All"]);
     const [loadPoke, setLoadPoke] = useState('https://pokeapi.co/api/v2/pokemon?limit=20');
     const getAllPokemons = async () => {
         const res = await fetch(loadPoke)
@@ -23,35 +24,37 @@ const App = () => {
         createPokemonObject(data.results)
         await console.log(allPokemons)
     }
-
-    const [q, setQ] = useState("")
-    const [searchParam] = useState(["rock", "ghost"])
     
     useEffect(() => {
         getAllPokemons()
     }, [])
 
-    const [filterByType, setFilterParam] = useState();
+    function search(allPokemons) {
+        return allPokemons.filter((pokemon) => {
+            if (pokemon.types[0].type.name == filterParam) {
+                return filterParam.some((newPokemon) => {
+                    return (
+                        pokemon[newPokemon]
+                    )
+                })
+            } else if (filterParam == "All") {
+                return filterParam.some((newPokemon) => {
+                    return (
+                        pokemon[newPokemon]
+                    )
+                })
+            }
+        })
+    }
 
   return (
     <>
     <Header />
     <Nav />
-    {allPokemons.filter((pokemon) => {
-        searchParam.some((newPokemon) => {
-         (
-            pokemon[newPokemon]
-        );
-    });
-    );
-    <div className="wrapper">
-        <div className="search-wrapper">
-            <input type="search" name="search-form" id="search-form" className="search-input" placeholder="Search for..." value={q}
-            onChange={(e) => setQ(e.target.value)} />
-        </div>
-    </div>
-    <select
-    className="type-filter">
+    <select className="type-filter"
+    onChange={(e) => {
+        setFilterParam(e.target.value);
+    }}>
     <option value="All">Filter By Type</option>
     <option value="rock">Rock</option>
     <option value="ghost">Ghost</option>
@@ -67,6 +70,12 @@ const App = () => {
     </select>
 
     <div className="pokemon__container">
+    {search(allPokemons).map((pokemon) => 
+    <Card 
+    id = {pokemon.type}
+    name = {pokemon.name}
+    />
+    )}
     {allPokemons.map((pokemon,index) =>
     <Card 
     id = {pokemon.id}
